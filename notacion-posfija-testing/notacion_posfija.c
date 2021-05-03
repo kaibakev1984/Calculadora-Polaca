@@ -1,6 +1,5 @@
 #include <stddef.h>
 #include <stdlib.h>
-#include <stdio.h>
 #include <ctype.h>
 #include <string.h>
 #include <stdbool.h>
@@ -44,38 +43,6 @@ bool terciarizar(int *numero_a, int *numero_b, int *numero_c, int *resultado) {
 
 bool es_operador(char *str) {
   return !strcmp(str, SUMA) || !strcmp(str, RESTA) || !strcmp(str, DIVISION) || !strcmp(str, OPERADOR_TERNARIO) || !strcmp(str, RAIZ);
-}
-
-bool operador_es_binario(char *str) {
-  return !strcmp(str, SUMA) || !strcmp(str, RESTA) || !strcmp(str, DIVISION);
-}
-
-bool operador_es_ternario(char *str) {
-  return !strcmp(str, OPERADOR_TERNARIO);
-}
-
-bool validar_notacion_posfija(char **strv) {
-  int count = 0;
-  for(size_t i = 0; strv[i]; i++) {
-    if(!es_operador(strv[i])) {
-      count++;
-    } else {
-      if(operador_es_binario(strv[i])) {
-        if(count < 2) {
-          return false;
-        } else {
-          count--;
-        }
-      } else if(operador_es_ternario(strv[i])) {
-        if(count < 3) {
-          return false;
-        } else {
-          count -= 2;
-        }
-      }
-    } 
-  }
-  return true;
 }
 
 bool operador_unario(pila_t *pila_numeros, bool operacion(int *, int *)) {
@@ -154,17 +121,6 @@ bool operar(char **strv, pila_t *pila_numeros) {
     }
   }
   return true;
-}
-
-int notacion_posfija(char **strv) {
-  pila_t *pila_numeros = pila_crear();
-  operar(strv, pila_numeros);
-  int resultado = *(int *) pila_ver_tope(pila_numeros);
-  while(!pila_esta_vacia(pila_numeros)) {
-    free(pila_desapilar(pila_numeros));
-  }
-  pila_destruir(pila_numeros);
-  return resultado;
 }
 
 int *notacion_polaca(char **strv) {
