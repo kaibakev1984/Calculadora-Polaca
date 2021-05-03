@@ -4,6 +4,7 @@
 #include <ctype.h>
 #include <string.h>
 #include <stdbool.h>
+#include <math.h>
 #include "notacion_posfija.h"
 #include "pila.h"
 #include "cola.h"
@@ -11,7 +12,12 @@
 #define SUMA "+"
 #define RESTA "-"
 #define DIVISION "/"
+#define RAIZ "sqrt"
 #define OPERADOR_TERNARIO "?"
+
+int raiz(int *numero_a) {
+  return (int) sqrt(*numero_a);
+}
 
 int sumar(int *numero_a, int *numero_b) {
   return *numero_b + *numero_a;
@@ -30,7 +36,7 @@ int terciarizar(int *numero_a, int *numero_b, int *numero_c) {
 }
 
 bool es_operador(char *str) {
-  return !strcmp(str, SUMA) || !strcmp(str, RESTA) || !strcmp(str, DIVISION) || !strcmp(str, OPERADOR_TERNARIO);
+  return !strcmp(str, SUMA) || !strcmp(str, RESTA) || !strcmp(str, DIVISION) || !strcmp(str, OPERADOR_TERNARIO) || !strcmp(str, RAIZ);
 }
 
 bool operador_es_binario(char *str) {
@@ -63,6 +69,14 @@ bool validar_notacion_posfija(char **strv) {
     } 
   }
   return true;
+}
+
+void operador_unario(pila_t *pila_numeros, int operacion(int *)) {
+  int *a = (int *)pila_desapilar(pila_numeros);
+  int *resultado = calloc(1, sizeof(int));
+  *resultado = operacion(a);
+  free(a);
+  pila_apilar(pila_numeros, resultado);
 }
 
 void operador_binario(pila_t *pila_numeros, int operacion(int *, int *)) {
@@ -105,6 +119,9 @@ void operar(char **strv, pila_t *pila_numeros) {
       }
       if(!strcmp(strv[i], OPERADOR_TERNARIO)) {
         operador_ternario(pila_numeros, terciarizar);
+      }
+      if(!strcmp(strv[i], RAIZ)) {
+        operador_unario(pila_numeros, raiz);
       }
     }
   }
