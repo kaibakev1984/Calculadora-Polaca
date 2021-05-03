@@ -1,11 +1,11 @@
 CC = gcc
 CFLAGS = -g -std=c99 -Wall -Wconversion -Wno-sign-conversion -Werror
 VFLAGS = --leak-check=full --show-reachable=yes --track-origins=yes
-EXEC = pruebas
-OBJFILE = calculadora_polaca.o 
+EXEC = dc
+OBJFILE = main.o notacion_posfija.o pila.o cola.o strutil.o
 TEXTFILE = oper.txt
 
-%.0: %.c %.h
+%.o: %.c %.h
 	$(CC) $(CFLAGS) -c $<
 
 $(EXEC): $(OBJFILE)
@@ -14,10 +14,12 @@ $(EXEC): $(OBJFILE)
 all: $(EXEC)
 
 run: all
-	./$(EXEC) < $(TEXTFILE)
+	clear
+	./$(EXEC) < $(TEXTFILE) 
 
-clear: $(EXEC) $(OBJFILE)
+free: $(OBJFILE)
 	rm -f $(EXEC) *.o
 
 valgrind: all
-	valgrind $(VFLAGS) ./$(EXEC) < $(TEXTFILE)
+	clear
+	valgrind $(VFLAGS) ./$(EXEC) < $(TEXTFILE) 

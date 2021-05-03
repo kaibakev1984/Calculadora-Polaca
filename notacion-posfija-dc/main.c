@@ -4,6 +4,8 @@
 #include <string.h>
 #include <ctype.h>
 #include <stdbool.h>
+#include "strutil.h"
+#include "notacion_posfija.h"
 
 char *str_crear(char *linea, size_t capacidad){
 	char *str = malloc(capacidad * sizeof(char));
@@ -14,24 +16,24 @@ char *str_crear(char *linea, size_t capacidad){
 }
 
 int main(int argc, const char *argv[]){
-	/* Esto es por si nos pasan solo el ejecutable..
-	 * pero no el archivo oper.txt*/
 	if(argc != 1){
 		fprintf(stderr, "%s\n", "Cantidad de parametros erronea");
 		return 1;
 	}
 
-	/* Líneas necesarias para usar getline */
 	char *linea = NULL;
 	size_t capacidad;
 	ssize_t leidos;
 	while((leidos = getline(&linea, &capacidad, stdin )) != -1) {
 		char *str = str_crear(linea, capacidad);
-		/******************Editame***********************/
-		
-		printf("%s\n", str);
-
-		/******************Fin Editame******************/
+    char **strv = split(str, ' ');
+		if(!validar_notacion_posfija(strv)) {
+      fprintf(stderr, "ERROR\n");
+    } else {
+      int resultado = notacion_posfija(strv);
+      fprintf(stdout, "%d\n", resultado);
+    }
+    free_strv(strv);
 		free(str);
 	}
 	free(linea);
