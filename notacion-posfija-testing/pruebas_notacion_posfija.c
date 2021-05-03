@@ -20,6 +20,9 @@ void pruebas_operaciones_notacion_posfija() {
    char *str_9 = "0 1 ?";
    char *str_10 = "2 2 + +";
    char *str_11 = "-5 sqrt";
+   char *str_12 = "60 sqrt";
+   char *str_13 = "20 -3 /";
+   char *str_14 = "18 2 log";
 
    char **strv_1 = split(str_1, ' ');
    char **strv_2 = split(str_2, ' ');
@@ -32,6 +35,9 @@ void pruebas_operaciones_notacion_posfija() {
    char **strv_9 = split(str_9, ' ');
    char **strv_10 = split(str_10, ' ');
    char **strv_11 = split(str_11, ' ');
+   char **strv_12 = split(str_12, ' ');
+   char **strv_13 = split(str_13, ' ');
+   char **strv_14 = split(str_14, ' ');
 
    int *numero_1 = notacion_posfija(strv_1);
    int *numero_2 = notacion_posfija(strv_2);
@@ -44,6 +50,9 @@ void pruebas_operaciones_notacion_posfija() {
    int *numero_9 = notacion_posfija(strv_9);
    int *numero_10 = notacion_posfija(strv_10);
    int *numero_11 = notacion_posfija(strv_11);
+   int *numero_12 = notacion_posfija(strv_12);
+   int *numero_13 = notacion_posfija(strv_13);
+   int *numero_14 = notacion_posfija(strv_14);
 
    print_test("5 3 + devuelve 8", 8 == *numero_1);
    print_test("5 3 - devuelve 2", 2 == *numero_2);
@@ -56,6 +65,9 @@ void pruebas_operaciones_notacion_posfija() {
    print_test("0 1 ? devuelve NULL", !numero_9);
    print_test("2 2 + + devuelve NULL", !numero_10);
    print_test("-5 sqrt devuelve NULL", !numero_11);
+   print_test("60 sqrt devuelve 7", 7 == *numero_12);
+   print_test("20 -3 / devuelve -6", -6 == *numero_13);
+   print_test("18 2 log devuelve 4", 4 == *numero_14);
 
    free_strv(strv_1);
    free_strv(strv_2);
@@ -68,6 +80,9 @@ void pruebas_operaciones_notacion_posfija() {
    free_strv(strv_9);
    free_strv(strv_10);
    free_strv(strv_11);
+   free_strv(strv_12);
+   free_strv(strv_13);
+   free_strv(strv_14);
 
    free(numero_1);
    free(numero_2);
@@ -77,6 +92,9 @@ void pruebas_operaciones_notacion_posfija() {
    free(numero_6);
    free(numero_7);
    free(numero_8);
+   free(numero_12);
+   free(numero_13);
+   free(numero_14);
 }
 
 void pruebas_notacion_posfija() {

@@ -13,6 +13,7 @@
 #define DIVISION "/"
 #define RAIZ "sqrt"
 #define OPERADOR_TERNARIO "?"
+#define LOGARITMO "log"
 
 bool raiz(int *numero_a, int *resultado) {
   if(*numero_a < 0) return false;
@@ -36,13 +37,20 @@ bool dividir(int *numero_a, int *numero_b, int *resultado) {
   return true;
 }
 
+bool logaritmo(int *numero_a, int *numero_b, int *resultado) {
+  if(*numero_a < 2) return false;
+  *resultado = (int) (log10((double) *numero_b) / log10((double) *numero_a));
+  return true;
+}
+
+
 bool terciarizar(int *numero_a, int *numero_b, int *numero_c, int *resultado) {
   *resultado = *numero_c ? *numero_b : *numero_a;
   return true;
 }
 
 bool es_operador(char *str) {
-  return !strcmp(str, SUMA) || !strcmp(str, RESTA) || !strcmp(str, DIVISION) || !strcmp(str, OPERADOR_TERNARIO) || !strcmp(str, RAIZ);
+  return !strcmp(str, SUMA) || !strcmp(str, RESTA) || !strcmp(str, DIVISION) || !strcmp(str, OPERADOR_TERNARIO) || !strcmp(str, RAIZ) || !strcmp(str, LOGARITMO);
 }
 
 bool operador_unario(pila_t *pila_numeros, bool operacion(int *, int *)) {
@@ -122,6 +130,9 @@ bool operar(char **strv, pila_t *pila_numeros) {
       if(!strcmp(strv[i], RAIZ)) {
         if(!operador_unario(pila_numeros, raiz)) return false;
       }
+      if(!strcmp(strv[i], LOGARITMO)) {
+        if(!operador_binario(pila_numeros, logaritmo)) return false;
+      }
     }
   }
   return true;
@@ -132,13 +143,13 @@ int *notacion_posfija(char **strv) {
   if(!pila_numeros) return NULL;
   int *resultado = calloc(1, sizeof(int));
   if(!resultado) return NULL;
-  if(!operar(strv, pila_numeros)) {
-    while(!pila_esta_vacia(pila_numeros)) free(pila_desapilar(pila_numeros));
-    pila_destruir(pila_numeros);
+  bool ok = operar(strv, pila_numeros);
+  if(ok) {
+    *resultado = *(int *) pila_ver_tope(pila_numeros);
+  } else {
     free(resultado);
-    return NULL;
+    resultado = NULL;
   }
-  *resultado = *(int *) pila_ver_tope(pila_numeros); 
   while(!pila_esta_vacia(pila_numeros)) free(pila_desapilar(pila_numeros));
   pila_destruir(pila_numeros);
   return resultado;
