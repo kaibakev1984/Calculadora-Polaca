@@ -91,7 +91,11 @@ bool operador_unario(pila_t *pila_numeros, bool operacion(int *, int *)) {
 bool operador_binario(pila_t *pila_numeros, bool operacion(int *, int *, int *)) {
   int *a = (int *)pila_desapilar(pila_numeros);
   int *b = (int *)pila_desapilar(pila_numeros);
-  if(!a || !b) return false;
+  if(!a || !b) {
+    if(a) free(a);
+    if(b) free(b);
+    return false;
+  }
   int *resultado = calloc(1, sizeof(int));
   if(!operacion(a, b, resultado)) {
     free(resultado);
@@ -107,7 +111,12 @@ bool operador_ternario(pila_t *pila_numeros, bool operacion(int *, int *, int *,
   int *a = (int *)pila_desapilar(pila_numeros);
   int *b = (int *)pila_desapilar(pila_numeros);
   int *c = (int *)pila_desapilar(pila_numeros);
-  if(!a || !b || !c) return false;
+  if(!a || !b || !c) {
+    if(a) free(a);
+    if(b) free(b);
+    if(c) free(c);
+    return false;
+  }
   int *resultado = calloc(1, sizeof(int));
   if(!operacion(a, b, c, resultado)) {
     free(resultado);
