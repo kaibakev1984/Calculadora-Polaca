@@ -1,6 +1,4 @@
-## Calculadora en notación posfija
-
-Se pide implementar un programa `dc` que permita realizar operaciones matemáticas. La calculadora leerá exclusivamente de entrada estándar (no toma argumentos por línea de comantos), interpretando cada línea como una operación en [notación polaca inversa][rpn-es] (también llamada _notación posfija_, en inglés [_reverse Polish notation_][rpn-en]); para cada línea, se imprimirá por salida estándar el resultado del cálculo.
+## Calculadora Polaca
 
 Ejemplo de varias operaciones, y su resultado:
 
@@ -36,7 +34,7 @@ ERROR
 
 ### Funcionamiento
 
-- Todas las operaciones trabajarán con números enteros, y devolverán números enteros. Se recomienda usar el tipo de C `long` para permitir operaciones de más de 32 bits (p.ej. $$3^{3^3}$$).
+- Todas las operaciones trabajarán con números enteros, y devolverán números enteros. Se recomienda usar el tipo de C `long` para permitir operaciones de más de 32 bits (p.ej. **3^3^3**).
 
 - El conjunto de operadores posibles es: suma (`+`), resta (`-`), multiplicación (`*`), división entera (`/`), raíz cuadrada (`sqrt`), exponenciación (`^`), logaritmo (`log`) en base arbitraria, y operador ternario (`?`).
 
@@ -44,13 +42,13 @@ ERROR
 
     Todos los operadores funcionan con dos operandos, excepto `sqrt` (toma un solo argumento) y el operador ternario (toma tres).
 
-- Tal y como se describe en la bibliografía enlazada, cualquier operación aritmética _a op b_ se escribe en postfijo como `a b op`{:.nowrap} (por ejemplo, $$3 - 2$$ se escribe en postfijo como `3 2 -`{:.nowrap}).
+- Tal y como se describe en la bibliografía enlazada, cualquier operación aritmética _a op b_ se escribe en postfijo como `a b op` (por ejemplo, **3 - 2** se escribe en postfijo como `3 2 -`).
 
   Es útil modelar la expresión como una pila cuyo tope es el extremo derecho de la misma (por ejemplo en `3 2 -`, el tope es `-`); entonces, se puede decir que lo primero que se desapila es el operador, y luego los operandos **en orden inverso**.
 
   - <!-- gettalong/kramdown#486 -->
 
-    Para operaciones con un solo operando, el formato es obviamente `a op`{:.nowrap} (por ejemplo, `5 sqrt`{:.nowrap}). Por su parte, para el operador ternario, el ordenamiento de los argumentos seguiría el mismo principio, transformándose `a ? b : c`{:.nowrap} en `a b c ?`{:.nowrap}.
+    Para operaciones con un solo operando, el formato es obviamente `a op` (por ejemplo, `5 sqrt`). Por su parte, para el operador ternario, el ordenamiento de los argumentos seguiría el mismo principio, transformándose `a ? b : c` en `a b c ?`.
 
 - Ejemplos (nótese que toda la aritmética es entera, y el resultado siempre se trunca):
 
