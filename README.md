@@ -1,78 +1,66 @@
-Introducción
-============
+## Calculadora en notación posfija
 
-Esta es una implementación de cómo leer un archivo
-por entrada estándar. Las implementaciones para, y
-guarda acá, para imprimir líneas del archivo de texto
-**oper.txt** (o sea, imprimir con un ***printf*** 
-cada línea de dicho archivo) ya están dadas.
+Se pide implementar un programa `dc` que permita realizar operaciones matemáticas. La calculadora leerá exclusivamente de entrada estándar (no toma argumentos por línea de comantos), interpretando cada línea como una operación en [notación polaca inversa][rpn-es] (también llamada _notación posfija_, en inglés [_reverse Polish notation_][rpn-en]); para cada línea, se imprimirá por salida estándar el resultado del cálculo.
 
-Solo queda de tu parte, implementar la función
-***calculadora_polaca***, que recibirá una línea,
-a la cuál le vas a tener que hacer el correspondiente
-***split*** para poder trabajarla.
+Ejemplo de varias operaciones, y su resultado:
 
-ComponentesDentroDeEstaCarpeta
-==============================
-Al descomprimir la carpeta, tendrás lo siguiente:
-1. oper.txt
-2. calculadora_polaca.txt
-3. makefile
+```
+$ cat oper.txt
+5 3 +
+5 3 -
+5 3 /
+3 5 8 + +
+3 5 8 + -
+3 5 - 8 +
+2 2 + +
+0 1 ?
+1 -1 0 ?
+5 sqrt
 
-¿Qué hace lo que te mandés?
-===========================
-Si haces ***make run***, vas a estar imprimiendo 
-todas las líneas del archivo oper.txt
+$ ./dc < oper.txt
+8
+2
+1
+16
+-10
+6
+ERROR
+ERROR
+-1
+2
+```
 
-¿Qué Es lo que tengo que hacer?
-===============================
-Vas a tener que editar el archivo ***calculadora_polaca.c***,
-SOLO lo que esta dentro del bloque:
-~~~~
-/*************Editame**********************/ 
+[rpn-en]: https://en.wikipedia.org/wiki/Reverse_Polish_notation
+[rpn-es]: https://es.wikipedia.org/wiki/Notaci%C3%B3n_polaca_inversa
 
-	printf("%s\n", str);
 
-/*************Fin Editame ****************/
-~~~~ 
+### Funcionamiento
 
-RecetasMakefile
-================
-Para agilizar las cosas, te dejé implementada varias recetas
-para que vayas probando directamente:
-***make run*** es para que corras el programa
-***make valgrind*** es para ver si no perdiste memoria
-***make clear*** MUY IMPORTANTE, para limpiar los ejecutables
-		y los *.o que se van a ir creando
+- Todas las operaciones trabajarán con números enteros, y devolverán números enteros. Se recomienda usar el tipo de C `long` para permitir operaciones de más de 32 bits (p.ej. $$3^{3^3}$$).
 
-Algunas Aclaraciones
-====================
-Vas a ver una función extraña llamada ***str_crear***.
-Lo que va a hacer es pedir memoria para poder leer las líneas
-de tu archivo. Sin importar la implementación, ya hace todo
-lo que necesitas, que es obtener la línea de tu archivo.
+- El conjunto de operadores posibles es: suma (`+`), resta (`-`), multiplicación (`*`), división entera (`/`), raíz cuadrada (`sqrt`), exponenciación (`^`), logaritmo (`log`) en base arbitraria, y operador ternario (`?`).
 
-Es importante destacar los 2 free que aparecen (uno dentro del
-while y otro fuera) que son necesarios por estar pidiendo memoria
-para obtener las líneas. 
+  - <!-- https://github.com/gettalong/kramdown/issues/486 -->
 
-Esta implementación no tiene agregada ***pila.h*** por lo que vas a
-tener que agregarla, dentro de la carpeta, incluyendo sus primitivas en ***pila.c***
+    Todos los operadores funcionan con dos operandos, excepto `sqrt` (toma un solo argumento) y el operador ternario (toma tres).
 
-Con esta implementación en el ***makefile***, vas a ver que
-hay una variable llamada OBJ, son los que van a crear nuestros
-*.o. Cuando vayas a agregar un nuevo archivo <nombre_archivo>.c,
-en donde dice OBJ vas a agregar <nombre_archivo>.o. En tu caso, 
-que vas a usar la pila, vas a agregar en OBJ pila.o. Te debería
-quedar de esta forma (en el archivo makefile):
+- Tal y como se describe en la bibliografía enlazada, cualquier operación aritmética _a op b_ se escribe en postfijo como `a b op`{:.nowrap} (por ejemplo, $$3 - 2$$ se escribe en postfijo como `3 2 -`{:.nowrap}).
 
-~~~~
-OBJ = calculadora_polaca.o pila.o
-~~~~
+  Es útil modelar la expresión como una pila cuyo tope es el extremo derecho de la misma (por ejemplo en `3 2 -`, el tope es `-`); entonces, se puede decir que lo primero que se desapila es el operador, y luego los operandos **en orden inverso**.
 
-NOTA 1: En el tp vas a estar haciedo uso de "*.o", pero no te va a
-importar por ahora, pero es importante que sepas que existe, porque
-vas a hacer uso de los mismos en el ***deps.mk*** que vas a entregar
-junto con el tp.
+  - <!-- gettalong/kramdown#486 -->
 
-NOTA 2: ¡¡Fuerza!!
+    Para operaciones con un solo operando, el formato es obviamente `a op`{:.nowrap} (por ejemplo, `5 sqrt`{:.nowrap}). Por su parte, para el operador ternario, el ordenamiento de los argumentos seguiría el mismo principio, transformándose `a ? b : c`{:.nowrap} en `a b c ?`{:.nowrap}.
+
+- Ejemplos (nótese que toda la aritmética es entera, y el resultado siempre se trunca):
+
+  - `20 11 -` → `20-11 = 9`
+  - `20 -3 /` → `20/-3 = -6`
+  - `20 10 ^` → `20^10 = 10240000000000`
+  - `60 sqrt` → `√60 = 7`
+  - `256 4 ^ 2 log` → `log₂(256⁴) = 32`
+  - `1 -1 0 ?` → `1 ? -1 : 0 = -1` (funciona [como en C][ternref])
+
+[ternref]: https://syntaxdb.com/ref/c/ternary
+
+
