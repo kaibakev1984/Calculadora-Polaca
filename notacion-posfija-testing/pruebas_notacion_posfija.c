@@ -153,6 +153,8 @@ void pruebas_operaciones_notacion_polaca() {
    free_strv(strv_6);
    free_strv(strv_7);
    free_strv(strv_8);
+   free_strv(strv_9);
+   free_strv(strv_10);
 
    free(numero_1);
    free(numero_2);

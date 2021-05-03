@@ -17,6 +17,7 @@
 
 bool raiz(int *numero_a, int *resultado) {
   if(!numero_a) return false;
+  if(*numero_a < 0) return false;
   *resultado = (int) sqrt(*numero_a);
   return true;
 }
@@ -95,7 +96,6 @@ bool operador_binario(pila_t *pila_numeros, bool operacion(int *, int *, int *))
   int *a = (int *)pila_desapilar(pila_numeros);
   int *b = (int *)pila_desapilar(pila_numeros);
   int *resultado = calloc(1, sizeof(int));
-  // *resultado = operacion(a, b);
   if(!operacion(a, b, resultado)) return false;
   free(a);
   free(b);
@@ -108,7 +108,6 @@ bool operador_ternario(pila_t *pila_numeros, bool operacion(int *, int *, int *,
   int *b = (int *)pila_desapilar(pila_numeros);
   int *c = (int *)pila_desapilar(pila_numeros);
   int *resultado = calloc(1, sizeof(int));
-  // *resultado = operacion(a, b, c);
   if(!operacion(a, b, c, resultado)) return false;
   free(a);
   free(b);
@@ -166,6 +165,7 @@ int *notacion_polaca(char **strv) {
     return NULL;
   }
   *resultado = *(int *) pila_ver_tope(pila_numeros); 
+   while(!pila_esta_vacia(pila_numeros)) free(pila_desapilar(pila_numeros));
   pila_destruir(pila_numeros);
   return resultado;
 }
