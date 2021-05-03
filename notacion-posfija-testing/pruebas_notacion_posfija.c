@@ -33,17 +33,17 @@ void pruebas_operaciones_notacion_posfija() {
    char **strv_10 = split(str_10, ' ');
    char **strv_11 = split(str_11, ' ');
 
-   int *numero_1 = notacion_polaca(strv_1);
-   int *numero_2 = notacion_polaca(strv_2);
-   int *numero_3 = notacion_polaca(strv_3);
-   int *numero_4 = notacion_polaca(strv_4);
-   int *numero_5 = notacion_polaca(strv_5);
-   int *numero_6 = notacion_polaca(strv_6);
-   int *numero_7 = notacion_polaca(strv_7);
-   int *numero_8 = notacion_polaca(strv_8);
-   int *numero_9 = notacion_polaca(strv_9);
-   int *numero_10 = notacion_polaca(strv_10);
-   int *numero_11 = notacion_polaca(strv_11);
+   int *numero_1 = notacion_posfija(strv_1);
+   int *numero_2 = notacion_posfija(strv_2);
+   int *numero_3 = notacion_posfija(strv_3);
+   int *numero_4 = notacion_posfija(strv_4);
+   int *numero_5 = notacion_posfija(strv_5);
+   int *numero_6 = notacion_posfija(strv_6);
+   int *numero_7 = notacion_posfija(strv_7);
+   int *numero_8 = notacion_posfija(strv_8);
+   int *numero_9 = notacion_posfija(strv_9);
+   int *numero_10 = notacion_posfija(strv_10);
+   int *numero_11 = notacion_posfija(strv_11);
 
    print_test("5 3 + devuelve 8", 8 == *numero_1);
    print_test("5 3 - devuelve 2", 2 == *numero_2);

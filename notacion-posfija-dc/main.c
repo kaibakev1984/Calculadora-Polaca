@@ -27,12 +27,13 @@ int main(int argc, const char *argv[]){
 	while((leidos = getline(&linea, &capacidad, stdin )) != -1) {
 		char *str = str_crear(linea, capacidad);
     char **strv = split(str, ' ');
-		if(!validar_notacion_posfija(strv)) {
+    int *resultado = notacion_posfija(strv);
+    if(!resultado) {
       fprintf(stderr, "ERROR\n");
     } else {
-      int resultado = notacion_posfija(strv);
-      fprintf(stdout, "%d\n", resultado);
+      fprintf(stdout, "%d\n", *resultado);
     }
+    free(resultado);
     free_strv(strv);
 		free(str);
 	}

@@ -127,7 +127,7 @@ bool operar(char **strv, pila_t *pila_numeros) {
   return true;
 }
 
-int *notacion_polaca(char **strv) {
+int *notacion_posfija(char **strv) {
   pila_t *pila_numeros = pila_crear();
   if(!pila_numeros) return NULL;
   int *resultado = calloc(1, sizeof(int));
