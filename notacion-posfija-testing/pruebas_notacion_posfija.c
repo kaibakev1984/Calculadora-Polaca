@@ -19,6 +19,7 @@ void pruebas_operaciones_notacion_posfija() {
    char *str_8 = "5 sqrt";
    char *str_9 = "0 1 ?";
    char *str_10 = "2 2 + +";
+   char *str_11 = "-5 sqrt";
 
    char **strv_1 = split(str_1, ' ');
    char **strv_2 = split(str_2, ' ');
@@ -30,6 +31,7 @@ void pruebas_operaciones_notacion_posfija() {
    char **strv_8 = split(str_8, ' ');
    char **strv_9 = split(str_9, ' ');
    char **strv_10 = split(str_10, ' ');
+   char **strv_11 = split(str_11, ' ');
 
    int *numero_1 = notacion_polaca(strv_1);
    int *numero_2 = notacion_polaca(strv_2);
@@ -41,6 +43,7 @@ void pruebas_operaciones_notacion_posfija() {
    int *numero_8 = notacion_polaca(strv_8);
    int *numero_9 = notacion_polaca(strv_9);
    int *numero_10 = notacion_polaca(strv_10);
+   int *numero_11 = notacion_polaca(strv_11);
 
    print_test("5 3 + devuelve 8", 8 == *numero_1);
    print_test("5 3 - devuelve 2", 2 == *numero_2);
@@ -52,6 +55,7 @@ void pruebas_operaciones_notacion_posfija() {
    print_test("5 sqrt devuelve 2", 2 == *numero_8);
    print_test("0 1 ? devuelve NULL", !numero_9);
    print_test("2 2 + + devuelve NULL", !numero_10);
+   print_test("-5 sqrt devuelve NULL", !numero_11);
 
    free_strv(strv_1);
    free_strv(strv_2);
@@ -63,6 +67,7 @@ void pruebas_operaciones_notacion_posfija() {
    free_strv(strv_8);
    free_strv(strv_9);
    free_strv(strv_10);
+   free_strv(strv_11);
 
    free(numero_1);
    free(numero_2);

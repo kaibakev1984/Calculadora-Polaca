@@ -49,7 +49,11 @@ bool operador_unario(pila_t *pila_numeros, bool operacion(int *, int *)) {
   int *a = (int *)pila_desapilar(pila_numeros);
   if(!a) return false;
   int *resultado = calloc(1, sizeof(int));
-  if(!operacion(a, resultado)) return false;
+  if(!operacion(a, resultado)) {
+    if(a) free(a);
+    free(resultado);
+    return false;
+  }
   free(a);
   pila_apilar(pila_numeros, resultado);
   return true;
@@ -129,6 +133,7 @@ int *notacion_polaca(char **strv) {
   int *resultado = calloc(1, sizeof(int));
   if(!resultado) return NULL;
   if(!operar(strv, pila_numeros)) {
+    while(!pila_esta_vacia(pila_numeros)) free(pila_desapilar(pila_numeros));
     pila_destruir(pila_numeros);
     free(resultado);
     return NULL;
